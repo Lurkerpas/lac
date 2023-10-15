@@ -8,6 +8,8 @@ setup(
     description="",
     version=lac.__version__,
     packages=find_packages(),
+    package_data={"lac" : ["acn.lark","asn1.lark"]},
+    data_files=[("lactemplates",["data/cheader.mako"])],
     author="Michał Kurowski",
     author_email="lurkerpas@gmail.com",
     url="https://github.com/Lurkerpas/lac",

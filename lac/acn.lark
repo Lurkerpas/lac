@@ -7,7 +7,10 @@
 %import common.FLOAT -> BARE_FLOAT
 %import common.SIGNED_FLOAT -> SIGNED_FLOAT
 %import common.WS
+%import common.NEWLINE -> NEWLINE
 %ignore WS
+
+COMMENT: "--" /[^\n]*/ NEWLINE
 
 MODULE_IDENTIFIER : (UCASE_LETTER(LETTER|DIGIT|"-")*)
 TYPE_IDENTIFIER: (UCASE_LETTER(LETTER|DIGIT|"-")*)
