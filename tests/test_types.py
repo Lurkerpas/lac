@@ -1,14 +1,12 @@
-import pytest
 from pathlib import Path
-import lac.lac
 from lac.acnencoding import *
-
+from lac import lac
 
 class TestTypes:
     __code_dir = Path(__file__).resolve().parent
 
     def test_ints(self):
-        modules = lac.lac.load_modules(
+        modules = lac.load_modules(
             [Path.joinpath(self.__code_dir, "type_int.asn")],
             [Path.joinpath(self.__code_dir, "type_int.acn")],
         )
@@ -24,7 +22,7 @@ class TestTypes:
         # assert IntegerEncoding.POS_INT == type.encoding.options.scalar_encoding
 
     def test_reals(self):
-        modules = lac.lac.load_modules(
+        modules = lac.load_modules(
             [Path.joinpath(self.__code_dir, "type_real.asn")],
             [Path.joinpath(self.__code_dir, "type_real.acn")],
         )
