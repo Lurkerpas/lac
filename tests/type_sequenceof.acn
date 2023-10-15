@@ -1,0 +1,10 @@
+SequenceOfModule DEFINITIONS ::=
+BEGIN
+
+TestInt [size 8, encoding pos-int, endianness little]
+
+TestFixedSequenceOf []
+
+TestVariableSequenceOf []
+
+END

@@ -1,0 +1,11 @@
+ChoiceModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+
+TestChoice ::= CHOICE {
+    field1 TestInt,
+    field2 TestInt
+}
+
+END

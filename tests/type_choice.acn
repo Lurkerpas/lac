@@ -1,0 +1,11 @@
+ChoiceModule DEFINITIONS ::=
+BEGIN
+
+TestInt [size 8, encoding pos-int, endianness little]
+
+TestChoice [] {
+    field1 [],
+    field2 []
+}
+
+END

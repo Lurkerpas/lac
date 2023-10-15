@@ -1,0 +1,8 @@
+OctetStringModule DEFINITIONS ::=
+BEGIN
+
+TestFixedOctet ::= OCTET STRING(SIZE(8))
+
+TestVariableOctet ::= OCTET STRING(SIZE(0..15))
+
+END

@@ -1,0 +1,10 @@
+SequenceOfModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+
+TestFixedSequenceOf ::= SEQUENCE (SIZE(16)) OF TestInt
+
+TestVariableSequenceOf ::= SEQUENCE (SIZE(0..7)) OF TestInt
+
+END

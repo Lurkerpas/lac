@@ -1,0 +1,8 @@
+OctetStringModule DEFINITIONS ::=
+BEGIN
+
+TestFixedOctet []
+
+TestVariableOctet []
+
+END

@@ -1,0 +1,6 @@
+BooleanModule DEFINITIONS ::=
+BEGIN
+
+TestBool ::= BOOLEAN
+
+END

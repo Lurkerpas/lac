@@ -1,0 +1,11 @@
+SequenceModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+
+TestSequence ::= SEQUENCE {
+    field1 TestInt,
+    field2 TestInt
+}
+
+END
