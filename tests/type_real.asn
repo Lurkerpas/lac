@@ -1,0 +1,6 @@
+RealModule DEFINITIONS ::=
+BEGIN
+
+TestReal ::= REAL(-2.0..2.0)
+
+END

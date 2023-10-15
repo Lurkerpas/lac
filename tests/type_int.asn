@@ -1,0 +1,6 @@
+IntModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..200)
+
+END

@@ -1,0 +1,39 @@
+%import common.WORD -> STRING
+%import common.LETTER -> LETTER
+%import common.UCASE_LETTER  -> UCASE_LETTER 
+%import common.LCASE_LETTER -> LCASE_LETTER
+%import common.DIGIT -> DIGIT
+%import common.SIGNED_INT -> INT
+%import common.FLOAT -> BARE_FLOAT
+%import common.SIGNED_FLOAT -> SIGNED_FLOAT
+%import common.WS
+%ignore WS
+
+MODULE_IDENTIFIER : (UCASE_LETTER(LETTER|DIGIT|"-")*)
+TYPE_IDENTIFIER: (UCASE_LETTER(LETTER|DIGIT|"-")*)
+MEMBER_IDENTIFIER: (LCASE_LETTER(LETTER|DIGIT|"-")*)
+FLOAT : SIGNED_FLOAT
+integer_value: INT
+present_when_specification: "present-when" MEMBER_IDENTIFIER "=" integer_value
+determinant_specification: "determinant" MEMBER_IDENTIFIER
+encode_values_specification: "encode-values"
+endianness_specification_big: "big"
+endianness_specification_little: "little"
+endianness_specification: "endianness" (endianness_specification_big | endianness_specification_little)
+size_specification: "size" (integer_value|MEMBER_IDENTIFIER)
+encoding_specification_pos_int: "pos-int"
+encoding_specification_twos_complement: "twos-complement"
+encoding_specification: "encoding" (encoding_specification_pos_int|encoding_specification_twos_complement)
+encoding_option: [size_specification
+    | encoding_specification
+    | endianness_specification
+    | encode_values_specification
+    | determinant_specification
+    | present_when_specification]
+encoding_options: encoding_option ("," encoding_option)*
+encoding_definition: "[" encoding_options "]" ["{" MEMBER_IDENTIFIER [TYPE_IDENTIFIER] encoding_definition ("," MEMBER_IDENTIFIER encoding_definition)* "}"]
+member_encoding_definition: MEMBER_IDENTIFIER encoding_definition
+type_encoding_definition: TYPE_IDENTIFIER encoding_definition
+module_body: type_encoding_definition*
+
+module:  MODULE_IDENTIFIER "DEFINITIONS" "::=" "BEGIN" module_body "END"

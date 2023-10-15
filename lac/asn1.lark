@@ -1,0 +1,55 @@
+%import common.WORD -> STRING
+%import common.LETTER -> LETTER
+%import common.UCASE_LETTER  -> UCASE_LETTER 
+%import common.LCASE_LETTER -> LCASE_LETTER
+%import common.DIGIT -> DIGIT
+%import common.SIGNED_INT -> INT
+%import common.FLOAT -> BARE_FLOAT
+%import common.SIGNED_FLOAT -> SIGNED_FLOAT
+%import common.WS
+%import common.NEWLINE -> NEWLINE
+%ignore WS
+
+COMMENT: "--" /[^\n]*/ NEWLINE
+%ignore COMMENT
+FLOAT : SIGNED_FLOAT|BARE_FLOAT
+MODULE_IDENTIFIER : (UCASE_LETTER(LETTER|DIGIT|"-")*)
+TYPE_IDENTIFIER: (UCASE_LETTER(LETTER|DIGIT|"-")*)
+MEMBER_IDENTIFIER: (LCASE_LETTER(LETTER|DIGIT|"-")*)
+integer_value: INT
+real_value : FLOAT
+present : "PRESENT"
+absent : "ABSENT"
+optionality_statement : "OPTIONAL"
+presence_mode : present | absent
+size_definition : "(" "SIZE" "(" ((integer_value ".." integer_value)|integer_value) ")"  ")"
+presence_statement : MEMBER_IDENTIFIER presence_mode
+member_definition : MEMBER_IDENTIFIER TYPE_IDENTIFIER [optionality_statement]
+boolean_definition : "BOOLEAN"
+integer_definition : "INTEGER" "(" integer_value ".." integer_value ")"
+real_definition : "REAL" "(" real_value ".." real_value ")"
+enumeration_value : MEMBER_IDENTIFIER ["(" integer_value ")"]
+enumeration_definition : "ENUMERATION" "{" enumeration_value ("," enumeration_value)* "}"
+alias_definition : TYPE_IDENTIFIER [ "(" "WITH" "COMPONENTS" "{"  presence_statement ("," presence_statement)* "}" ")" ]
+sequence_definition : "SEQUENCE" "{" member_definition ("," member_definition)* "}"
+sequence_of_definition : "SEQUENCE" size_definition "OF" TYPE_IDENTIFIER
+choice_definition : "CHOICE" "{"  member_definition ("," member_definition)* "}"
+octetstring_definition: "OCTET STRING" size_definition
+bitstring_definition: "BITSTRING" size_definition
+ia5string_definition: "Ia5String" size_definition
+
+type_definition: TYPE_IDENTIFIER "::=" [integer_definition 
+    | boolean_definition 
+    | enumeration_definition
+    | real_definition
+    | alias_definition
+    | sequence_definition
+    | sequence_of_definition
+    | choice_definition
+    | octetstring_definition
+    | bitstring_definition
+    | ia5string_definition]
+import_statement: "IMPORTS" TYPE_IDENTIFIER ("," TYPE_IDENTIFIER)* "FROM" MODULE_IDENTIFIER ";" 
+module_imports: import_statement*
+module_body: type_definition*
+module:  MODULE_IDENTIFIER "DEFINITIONS" "::=" "BEGIN" module_imports module_body "END"
