@@ -6,7 +6,7 @@ import lac
 setup(
     name="lac",
     description="",
-    version=lac.__version__,
+    version= "0.0.1",
     packages=find_packages(),
     package_data={"lac" : ["acn.lark","asn1.lark"]},
     data_files=[("lactemplates",["data/cheader.mako"])],

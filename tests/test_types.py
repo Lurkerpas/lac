@@ -1,5 +1,5 @@
 from pathlib import Path
-from lac.acnencoding import *
+from lac import acnencoding
 from lac import lac
 
 class TestTypes:
@@ -19,7 +19,7 @@ class TestTypes:
         assert 0 == type.range.min
         assert 200 == type.range.max
         assert 8 == type.encoding.options.size.size
-        # assert IntegerEncoding.POS_INT == type.encoding.options.scalar_encoding
+        # assert acnencoding.IntegerEncoding.POS_INT == type.encoding.options.scalar_encoding
 
     def test_reals(self):
         modules = lac.load_modules(
