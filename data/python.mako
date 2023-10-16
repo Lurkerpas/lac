@@ -29,14 +29,17 @@ from .${include.module_name} import *
 ## IntegerType
 % if isinstance(type, IntegerType):
 ${type.name} = int
+
 % endif
 ## RealType
 % if isinstance(type, RealType):
 ${type.name} = float
+
 % endif
 ## BooleanType
 % if isinstance(type, BooleanType):
 ${type.name} = bool
+
 % endif
 ## EnumerationType
 % if isinstance(type, EnumerationType):
@@ -62,15 +65,24 @@ class ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
-${type.name} = Union[
+class ${type.name}_PRESENT():
+<% count = 0 %>\
+% for member in type.alternatives:
+    ${member.name}_PRESENT = ${count}, <% count = count + 1 %>
+% endfor
+
+
+class ${type.name}:
+    kind : ${type.name}_PRESENT()
+    u : Union[
 % for member in type.alternatives:
         ${member.type_name},
 % endfor
     ]
 
+
 % endif
 % endfor
-
 ## Type transcoding
 % for type in module.types.values():
 ## IntegerType
@@ -126,7 +138,32 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
+def encode_${type.name}_PRESENT(x : ${type.name}_PRESENT) -> BitArray:
+    return BitArray(int=x, length=8)
+
+def decode_${type.name}_PRESENT(data : BitStream) -> ${type.name}_PRESENT:
+    x = data[data.bitpos:data.bitpos+8].int
+    data.bitpos += 8
+    return x
+
+def encode_${type.name}(x : ${type.name}) -> BitArray:
+    data = encode_${type.name}_PRESENT(x.kind)
+    match x.kind:
 % for member in type.alternatives:
+        case ${type.name}_PRESENT.${member.name}_PRESENT:
+            data += encode_${member.type_name}(x.u)
 % endfor
+    return data
+
+def decode_${type.name}(data : BitStream) -> ${type.name}:
+    x = ${type.name}()
+    x.kind = decode_${type.name}_PRESENT(data)
+    match x.kind:
+% for member in type.alternatives:
+        case ${type.name}_PRESENT.${member.name}_PRESENT:
+            x.u = decode_${member.type_name}(data)
+% endfor  
+    return x
+
 % endif
 % endfor
