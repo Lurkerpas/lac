@@ -1,0 +1,14 @@
+Test DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+
+TestFixedOctet ::= OCTET STRING(SIZE(8))
+
+TestVariableOctet ::= OCTET STRING(SIZE(0..15))
+
+TestFixedArray ::= SEQUENCE(SIZE(255)) OF TestInt
+
+TestVariableArray ::= SEQUENCE(SIZE(0..63)) OF TestInt
+
+END

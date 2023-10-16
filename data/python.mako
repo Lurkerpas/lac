@@ -17,7 +17,7 @@ module_name = module.name.upper()
 ## Standard Python imports
 from typing import List, Union
 from enum import Enum
-from bitstring import Bits, BitArray, BitStream, pack
+from bitstring import BitArray, BitStream
 
 ## Includes for imported types
 % for include in module.imports:
@@ -65,7 +65,7 @@ class ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
-class ${type.name}_selection():
+class ${type.name}_selection(Enum):
 <% count = 0 %>\
 % for member in type.alternatives:
     ${member.name}_PRESENT = ${count}, <% count = count + 1 %>
@@ -78,7 +78,7 @@ ${type.name}_union = Union[
     ]
 
 class ${type.name}:
-    kind : ${type.name}_selection()
+    kind : ${type.name}_selection
     u : ${type.name}_union
 
 

@@ -1,0 +1,14 @@
+Test DEFINITIONS ::=
+BEGIN
+
+TestInt [size 8]
+
+TestFixedOctet []
+
+TestVariableOctet []
+
+TestFixedArray []
+
+TestVariableArray []
+
+END

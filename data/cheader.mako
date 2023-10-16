@@ -8,7 +8,10 @@ from lac.asn1types import \
     SequenceType, \
     SequenceOfType, \
     ChoiceType, \
-    OctetStringType
+    OctetStringType, \
+    OctetStringType, \
+    FixedSize, \
+    RangedSize
 %>
 ## Python definitions
 <%
@@ -24,6 +27,11 @@ module_name = module.name.upper()
 ## Includes for imported types
 % for include in module.imports:
 #include "${include.module_name}.h"
+% endfor
+
+## Debug list of types
+% for type in module.types.values():
+// ${type.name}
 % endfor
 
 ## Type declarations
@@ -84,7 +92,6 @@ typedef struct
 } ${type.name};
 
 % endif
-% endfor
 ## ChoiceType
 % if isinstance(type, ChoiceType):
 typedef enum {
@@ -106,4 +113,37 @@ typedef struct {
 } ${type.name};
 
 % endif
+## OctetStringType
+% if isinstance(type, OctetStringType):
+%   if isinstance(type.size, RangedSize):
+typedef struct
+{
+    int nCount;
+    uint8_t arr[${type.size.range.max}];
+} ${type.name};
+%   else:
+typedef struct
+{
+    uint8_t arr[${type.size.size}];
+} ${type.name};
+%   endif
+
+% endif
+## SequenceOfType
+% if isinstance(type, SequenceOfType):
+%   if isinstance(type.size, RangedSize):
+typedef struct
+{
+    int nCount;
+    ${type.element_type_name} arr[${type.size.range.max}];
+} ${type.name};
+%   else:
+typedef struct
+{
+    ${type.element_type_name} arr[${type.size.size}];
+} ${type.name};
+%   endif
+
+% endif
+% endfor
 #endif // ${module_name}_H
