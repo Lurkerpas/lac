@@ -65,20 +65,21 @@ class ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
-class ${type.name}_PRESENT():
+class ${type.name}_selection():
 <% count = 0 %>\
 % for member in type.alternatives:
     ${member.name}_PRESENT = ${count}, <% count = count + 1 %>
 % endfor
 
-
-class ${type.name}:
-    kind : ${type.name}_PRESENT()
-    u : Union[
+${type.name}_union = Union[
 % for member in type.alternatives:
         ${member.type_name},
 % endfor
     ]
+
+class ${type.name}:
+    kind : ${type.name}_selection()
+    u : ${type.name}_union
 
 
 % endif
@@ -138,29 +139,29 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
-def encode_${type.name}_PRESENT(x : ${type.name}_PRESENT) -> BitArray:
+def encode_${type.name}_selection(x : ${type.name}_selection) -> BitArray:
     return BitArray(int=x, length=8)
 
-def decode_${type.name}_PRESENT(data : BitStream) -> ${type.name}_PRESENT:
+def decode_${type.name}_selection(data : BitStream) -> ${type.name}_selection:
     x = data[data.bitpos:data.bitpos+8].int
     data.bitpos += 8
     return x
 
 def encode_${type.name}(x : ${type.name}) -> BitArray:
-    data = encode_${type.name}_PRESENT(x.kind)
+    data = encode_${type.name}_selection(x.kind)
     match x.kind:
 % for member in type.alternatives:
-        case ${type.name}_PRESENT.${member.name}_PRESENT:
+        case ${type.name}_selection.${member.name}_PRESENT:
             data += encode_${member.type_name}(x.u)
 % endfor
     return data
 
 def decode_${type.name}(data : BitStream) -> ${type.name}:
     x = ${type.name}()
-    x.kind = decode_${type.name}_PRESENT(data)
+    x.kind = decode_${type.name}_selection(data)
     match x.kind:
 % for member in type.alternatives:
-        case ${type.name}_PRESENT.${member.name}_PRESENT:
+        case ${type.name}_selection.${member.name}_PRESENT:
             x.u = decode_${member.type_name}(data)
 % endfor  
     return x
