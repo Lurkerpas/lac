@@ -39,11 +39,27 @@ def parse_acn_encoding_options(tree: ParseTree) -> EncodingOptions:
                     pass
     return options
 
+def parse_acn_member_encoding_specification(tree: ParseTree) -> MemberEncodingSpecification:
+    spec = MemberEncodingSpecification()
+    spec.member_name = tree.children[0].value
+    spec.member_type_name = None
+    if tree.children[1] is not None:
+        spec.member_type_name = tree.children[1].value
+    spec.specification # TODO
+    return spec
+    
 
 def parse_acn_encoding_specification(tree: ParseTree) -> EncodingSpecification:
     result = EncodingSpecification()
     result.type_name = tree.children[0].value
     result.options = parse_acn_encoding_options(tree.children[1].children[0])
+
+    for i in range(1,len(tree.children[1].children)):
+        child = tree.children[1].children[i]
+        if child is not None:
+            spec = parse_acn_member_encoding_specification(child)
+            result.member_specifications.append(spec)
+
     return result
 
 

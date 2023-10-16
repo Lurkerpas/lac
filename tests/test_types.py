@@ -191,4 +191,27 @@ class TestTypes:
         assert "NullType" in module.types.keys()
         type = module.types["NullType"]
         assert isinstance(type, NullType)
+
+    def test_acn_field(self):
+        modules = lac.load_modules(
+            [self.path("type_acn_field.asn")],
+            [self.path("type_acn_field.acn")],
+        )
+        assert 1 == len(modules)
+        module = modules[0]
+        assert "AcnModule" == module.name
+        assert 2 == len(module.types.values())
+        assert "Seq" in module.types.keys()
+        type = module.types["Seq"]
+        assert isinstance(type, SequenceType)
+        assert 3 == len(type.elements)
+        assert "a" == type.elements[0].name
+        assert not type.elements[0].acn
+        assert "Uint8" == type.elements[0].type_name
+        assert "x" == type.elements[1].name
+        assert type.elements[1].acn
+        assert "Uint8" == type.elements[1].type_name
+        assert "b" == type.elements[2].name
+        assert not type.elements[2].acn
+        assert "Uint8" == type.elements[2].type_name
         

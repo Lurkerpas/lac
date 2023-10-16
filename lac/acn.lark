@@ -34,8 +34,8 @@ encoding_option: [size_specification
     | determinant_specification
     | present_when_specification]
 encoding_options: encoding_option ("," encoding_option)*
-encoding_definition: "[" encoding_options "]" ["{" MEMBER_IDENTIFIER [TYPE_IDENTIFIER] encoding_definition ("," MEMBER_IDENTIFIER encoding_definition)* "}"]
-member_encoding_definition: MEMBER_IDENTIFIER encoding_definition
+encoding_definition: "[" encoding_options "]" ["{" member_encoding_definition ("," member_encoding_definition)* "}"]
+member_encoding_definition: MEMBER_IDENTIFIER [TYPE_IDENTIFIER] encoding_definition
 type_encoding_definition: TYPE_IDENTIFIER encoding_definition
 module_body: type_encoding_definition*
 

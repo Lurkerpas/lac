@@ -4,7 +4,9 @@ from .asn1types import \
     Asn1Type, \
     AliasType, \
     IntegerType, \
-    IntegerRange
+    IntegerRange, \
+    SequenceType, \
+    SequenceElement
 
 from .acntransformer import AcnModule
 
@@ -46,7 +48,18 @@ def resolve_aliases(modules : dict[str, Asn1Module]):
                     raise Exception()
                 new_type = resolve_alias(type, aliased_type)
                 src_module.types[new_type.name] = new_type
-                
+
+def resolve_acn_fields(type : SequenceType):
+    field_count = max(len(type.elements), len(type.encoding.member_specifications))
+    for i in range(0,field_count):
+        element = type.elements[i]
+        spec = type.encoding.member_specifications[i]
+        if not spec.member_name == element.name:
+            acn_element = SequenceElement()
+            acn_element.acn = True
+            acn_element.name = spec.member_name
+            acn_element.type_name = spec.member_type_name
+            type.elements.insert(i, acn_element)
 
 def resolve_encodings(asn1_module: Asn1Module, acn_module: AcnModule):
     for type_name, type in asn1_module.types.items():
@@ -54,3 +67,5 @@ def resolve_encodings(asn1_module: Asn1Module, acn_module: AcnModule):
             continue
         acn_specification = acn_module.specifications[type_name]
         type.encoding = acn_specification
+        if isinstance(type, SequenceType):
+            resolve_acn_fields(type)

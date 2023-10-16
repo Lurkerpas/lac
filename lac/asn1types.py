@@ -99,11 +99,13 @@ class SequenceElement:
     name: str
     type_name: str
     optional: bool
+    acn : bool
 
     def __init__(self) -> None:
         self.name = ""
         self.type_name = ""
         self.optional = False
+        self.acn = False
 
 
 class SequenceType(Asn1Type):

@@ -1,0 +1,11 @@
+AcnModule DEFINITIONS ::= 
+BEGIN
+
+Uint8 ::= INTEGER(0..255)
+
+Seq ::= SEQUENCE {
+    a Uint8,
+    b Uint8
+}
+
+END

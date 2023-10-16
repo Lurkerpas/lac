@@ -35,10 +35,13 @@ class FloatEncoding(ScalarEncoding):
 
 class MemberEncodingSpecification:
     member_name: str
+    member_type_name : str
     specification: "EncodingSpecification"
 
     def __init__(self) -> None:
         self.member_name = ""
+        self.member_type_name = None
+        self.specification = None
 
 
 class EncodingOptions:

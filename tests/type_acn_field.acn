@@ -1,0 +1,12 @@
+AcnModule DEFINITIONS ::= 
+BEGIN
+
+Uint8 [size 8]
+
+Seq [] {
+    a [],
+    x Uint8 [],
+    b []
+}
+
+END
