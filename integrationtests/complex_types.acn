@@ -1,0 +1,17 @@
+Test DEFINITIONS ::=
+BEGIN
+
+Int8 [size 8]
+Float []
+
+TestStructure [] {
+    field1 [],
+    field2 []
+}
+
+TestUnion [] {
+    alt1 [],
+    alt2 []
+}
+
+END

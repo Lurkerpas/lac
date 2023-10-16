@@ -1,0 +1,17 @@
+Test DEFINITIONS ::=
+BEGIN
+
+Int8 ::= INTEGER(0..255)
+Float ::= REAL(-1.0..1.0)
+
+TestStructure ::= SEQUENCE {
+    field1 Int8,
+    field2 Float
+}
+
+TestUnion ::= CHOICE {
+    alt1 Int8,
+    alt2 Float
+}
+
+END
