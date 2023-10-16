@@ -44,13 +44,13 @@ class RealRange:
 
 
 class Asn1Type:
-    parent_name: str
+    module_name: str
     name: str
     size: Size
     encoding: EncodingSpecification
 
     def __init__(self) -> None:
-        self.parent_name = None
+        self.module_name = None
         self.name = ""
         self.size = None
 
@@ -186,6 +186,12 @@ class Asn1Module:
     name: str
     imports: List[ModuleImport]
     types: dict[str, Asn1Type]
+
+    def get_importing_module(self, type_name : str) -> ModuleImport:
+        for module_import in self.imports:
+            if type_name in module_import.type_names:
+                return module_import
+        return None
 
     def __init__(self) -> None:
         self.name = ""

@@ -1,0 +1,7 @@
+AliasModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+TestIntAlias ::= TestInt(17..31)
+
+END

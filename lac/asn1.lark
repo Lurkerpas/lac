@@ -30,7 +30,7 @@ integer_definition : "INTEGER" "(" integer_value ".." integer_value ")"
 real_definition : "REAL" "(" real_value ".." real_value ")"
 enumeration_value : MEMBER_IDENTIFIER ["(" integer_value ")"]
 enumeration_definition : "ENUMERATION" "{" enumeration_value ("," enumeration_value)* "}"
-alias_definition : TYPE_IDENTIFIER [ "(" "WITH" "COMPONENTS" "{"  presence_statement ("," presence_statement)* "}" ")" ]
+alias_definition : TYPE_IDENTIFIER [ ("(" "WITH" "COMPONENTS" "{"  presence_statement ("," presence_statement)* "}" ")") | ("(" integer_value ".." integer_value ")")]
 sequence_definition : "SEQUENCE" "{" member_definition ("," member_definition)* "}"
 sequence_of_definition : "SEQUENCE" size_definition "OF" TYPE_IDENTIFIER
 choice_definition : "CHOICE" "{"  member_definition ("," member_definition)* "}"

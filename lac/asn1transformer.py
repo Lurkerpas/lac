@@ -108,11 +108,6 @@ def parse_asn1_enum_definition(tree: ParseTree) -> EnumerationType:
     return result
 
 
-def parse_asn1_alias_definition(tree: ParseTree) -> AliasType:
-    result = AliasType()
-    return result
-
-
 def parse_asn1_choice_alternative(tree: ParseTree) -> ChoiceAlternative:
     result = ChoiceAlternative()
     result.name = tree.children[0].value
@@ -187,8 +182,11 @@ def parse_asn1_ia5string_definition(tree: ParseTree) -> Ia5StringType:
 def parse_asn1_alias_definition(tree: ParseTree) -> AliasType:
     result = AliasType()
     result.aliased_type_name = tree.children[0].value
-    if isinstance(tree.children[1], Tree):
-        pass  # TODO
+    if len(tree.children) == 3:
+        if isinstance(tree.children[1], Tree) and isinstance(tree.children[2], Tree):
+            result.range = IntegerRange()
+            result.range.min = parse_asn1_integer_value(tree.children[1])
+            result.range.max = parse_asn1_integer_value(tree.children[2])
     return result
 
 
@@ -254,6 +252,8 @@ def parse_asn1_module(tree: ParseTree) -> Asn1Module:
                     module.types = parse_asn1_module_body(child)
                 case _:
                     pass
+    for _, type in module.types.items():
+        type.module_name = module.name
     return module
 
 

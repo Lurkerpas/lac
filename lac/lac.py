@@ -55,7 +55,7 @@ def parse_acn_modules(parser: Lark, acn_file_names: List[str]) -> dict[str, AcnM
     return modules
 
 
-def resolve_modules(
+def resolve_encodings(
     asn1_modules: dict[str, Asn1Module], acn_modules: dict[str, AcnModule]
 ) -> None:
     for asn1_module in asn1_modules.values():
@@ -75,7 +75,8 @@ def load_modules(
     asn1_modules = parse_asn1_modules(asn1_parser, asn1_file_names)
     acn_modules = parse_acn_modules(acn_parser, acn_file_names)
 
-    resolve_modules(asn1_modules, acn_modules)
+    resolve_encodings(asn1_modules, acn_modules)
+    typeresolver.resolve_aliases(asn1_modules)
     return list(asn1_modules.values())
 
 

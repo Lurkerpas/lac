@@ -8,7 +8,8 @@ from lac.asn1types import \
     ChoiceType, \
     OctetStringType, \
     SequenceOfType, \
-    BooleanType
+    BooleanType, \
+    EnumerationType
 
 class TestTypes:
     __code_dir = Path(__file__).resolve().parent
@@ -59,6 +60,27 @@ class TestTypes:
         assert "TestReal" == type.name
         assert -2 == type.range.min
         assert 2 == type.range.max
+
+    def test_enum(self):
+        modules = lac.load_modules(
+            [self.path("type_enum.asn")],
+            [self.path("type_enum.acn")],
+        )
+        assert 1 == len(modules)
+        module = modules[0]
+        assert "EnumModule" == module.name
+        assert 1 == len(module.types.values())
+        type = list(module.types.values())[0]
+        assert isinstance(type, EnumerationType)
+        assert "TestEnum" == type.name
+        assert 32 == type.encoding.options.size.size
+        assert 3 == len(type.values)
+        assert "val1" == type.values[0].name
+        assert 0 == type.values[0].value
+        assert "val2" == type.values[1].name
+        assert 5 == type.values[1].value
+        assert "val3" == type.values[2].name
+        assert None == type.values[2].value
 
     def test_sequence(self):
         modules = lac.load_modules(
@@ -135,3 +157,23 @@ class TestTypes:
         assert "TestInt" == type2.element_type_name
         assert 0 == type2.size.range.min
         assert 7 == type2.size.range.max
+
+    def test_alias(self):
+        modules = lac.load_modules(
+            [self.path("type_alias.asn")],
+            [self.path("type_alias.acn")],
+        )
+        assert 1 == len(modules)
+        module = modules[0]
+        assert "AliasModule" == module.name
+        assert 2 == len(module.types.values())
+        assert "TestInt" in module.types.keys()
+        type1 = module.types["TestInt"]
+        assert isinstance(type1, IntegerType)
+        assert 0 == type1.range.min
+        assert 255 == type1.range.max
+        assert "TestInt" in module.types.keys()
+        type2 = module.types["TestIntAlias"]
+        assert isinstance(type1, IntegerType)
+        assert 17 == type2.range.min
+        assert 31 == type2.range.max

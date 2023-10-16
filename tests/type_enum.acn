@@ -1,0 +1,6 @@
+EnumModule DEFINITIONS ::=
+BEGIN
+
+TestEnum [size 32, encode-values]
+
+END

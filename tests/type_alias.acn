@@ -1,0 +1,7 @@
+AliasModule DEFINITIONS ::=
+BEGIN
+
+TestInt [size 32, encoding pos-int, endianness little]
+TestIntAlias [size 16]
+
+END

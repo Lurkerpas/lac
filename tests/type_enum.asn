@@ -1,0 +1,10 @@
+EnumModule DEFINITIONS ::=
+BEGIN
+
+TestEnum ::= ENUMERATION {
+    val1 (0),
+    val2 (5),
+    val3
+}
+
+END
