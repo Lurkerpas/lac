@@ -172,6 +172,11 @@ class AliasType(Asn1Type):
         super().__init__()
         self.aliased_type_name = ""
 
+class NullType(Asn1Type):
+
+    def __init__(self) -> None:
+        super().__init__()
+
 
 class ModuleImport:
     module_name: str

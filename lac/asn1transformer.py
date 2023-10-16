@@ -23,6 +23,7 @@ from .asn1types import (
     Size,
     RangedSize,
     FixedSize,
+    NullType
 )
 
 
@@ -189,6 +190,9 @@ def parse_asn1_alias_definition(tree: ParseTree) -> AliasType:
             result.range.max = parse_asn1_integer_value(tree.children[2])
     return result
 
+def parse_asn1_null_definition(tree: ParseTree) -> NullType:
+    result = NullType()
+    return result
 
 def parse_asn1_type_definition(tree: ParseTree) -> Asn1Type:
     name = ""
@@ -220,6 +224,8 @@ def parse_asn1_type_definition(tree: ParseTree) -> Asn1Type:
                     type = parse_asn1_bitstring_definition(child)
                 case "ia5string_definition":
                     type = parse_asn1_ia5string_definition(child)
+                case "null_definition":
+                    type = parse_asn1_null_definition(child)
                 case _:
                     pass
     type.name = name

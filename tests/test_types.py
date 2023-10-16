@@ -9,7 +9,8 @@ from lac.asn1types import \
     OctetStringType, \
     SequenceOfType, \
     BooleanType, \
-    EnumerationType
+    EnumerationType, \
+    NullType
 
 class TestTypes:
     __code_dir = Path(__file__).resolve().parent
@@ -177,3 +178,17 @@ class TestTypes:
         assert isinstance(type1, IntegerType)
         assert 17 == type2.range.min
         assert 31 == type2.range.max
+
+    def test_null(self):
+        modules = lac.load_modules(
+            [self.path("type_null.asn")],
+            [self.path("type_null.acn")],
+        )
+        assert 1 == len(modules)
+        module = modules[0]
+        assert "NullModule" == module.name
+        assert 1 == len(module.types.values())
+        assert "NullType" in module.types.keys()
+        type = module.types["NullType"]
+        assert isinstance(type, NullType)
+        

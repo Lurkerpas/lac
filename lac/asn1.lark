@@ -37,18 +37,21 @@ choice_definition : "CHOICE" "{"  member_definition ("," member_definition)* "}"
 octetstring_definition: "OCTET STRING" size_definition
 bitstring_definition: "BITSTRING" size_definition
 ia5string_definition: "Ia5String" size_definition
+null_definition: "NULL"
 
 type_definition: TYPE_IDENTIFIER "::=" [integer_definition 
     | boolean_definition 
     | enumeration_definition
     | real_definition
-    | alias_definition
     | sequence_definition
     | sequence_of_definition
     | choice_definition
     | octetstring_definition
     | bitstring_definition
-    | ia5string_definition]
+    | ia5string_definition
+    | null_definition
+    | alias_definition]
+
 import_statement: "IMPORTS" TYPE_IDENTIFIER ("," TYPE_IDENTIFIER)* "FROM" MODULE_IDENTIFIER ";" 
 module_imports: import_statement*
 module_body: type_definition*

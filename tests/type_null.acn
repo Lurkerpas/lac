@@ -1,0 +1,6 @@
+NullModule DEFINITIONS ::=
+BEGIN
+
+NullType []
+
+END
