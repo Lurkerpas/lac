@@ -1,0 +1,15 @@
+Test DEFINITIONS ::=
+BEGIN
+
+UInt8 ::= INTEGER(0..255)
+Int16 ::= INTEGER(-32768..32767)
+
+Bool8 ::= BOOLEAN
+
+Values ::= ENUMERATION {
+    val1 (1),
+    val2 (2),
+    val3 (4) 
+}
+
+END

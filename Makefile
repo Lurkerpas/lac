@@ -13,6 +13,7 @@ install:
 
 check:
 	python3 -m pytest tests
+	${MAKE} -C integrationtests check 
 
 check-format:
 	${BLACK} --version

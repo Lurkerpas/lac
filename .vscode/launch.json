@@ -13,6 +13,8 @@
                 "data/cheader.mako",
                 "-e",
                 "c",
+                "-o",
+                "out",
                 "tests/type_int.asn",
                 "tests/type_int.acn"],
             "justMyCode": true

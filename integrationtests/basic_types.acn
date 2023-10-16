@@ -1,0 +1,11 @@
+Test DEFINITIONS ::=
+BEGIN
+
+UInt8 [size 8, encoding pos-int]
+Int16 [size 16, encoding twos-complement]
+
+Bool8 [size 8]
+
+Values [size 16, encode-values]
+
+END

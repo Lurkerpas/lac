@@ -158,7 +158,7 @@ class TestTypes:
         assert 0 == type2.size.range.min
         assert 7 == type2.size.range.max
 
-    def test_alias(self):
+    def test_int_alias(self):
         modules = lac.load_modules(
             [self.path("type_alias.asn")],
             [self.path("type_alias.acn")],
