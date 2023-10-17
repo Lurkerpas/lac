@@ -14,7 +14,9 @@ TESTS = \
 	complex_types_c \
 	complex_types_py \
 	vector_types_c \
-	vector_types_py
+	vector_types_py \
+	determinants_c \
+	determinants_py
 
 .SILENT : \
 	${TESTS}
@@ -59,4 +61,16 @@ vector_types_py:
 	echo "Vector Types Python"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py vector_types.asn vector_types.acn
+	${PY} ${TEST_DIR}/Test.py
+
+determinants_c:
+	echo "Vector Types C"
+	${CREATE_EMPTY_TEST_DIR}
+	${LAC} -t ${TMPLT_DIR}/cheader.mako -o ${TEST_DIR} -e c determinants.asn determinants.acn
+	${CC} -c ${TEST_DIR}/Test.c -o ${TEST_DIR}/Test.o
+	
+determinants_py:
+	echo "Vector Types Python"
+	${CREATE_EMPTY_TEST_DIR}
+	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py determinants.asn determinants.acn
 	${PY} ${TEST_DIR}/Test.py

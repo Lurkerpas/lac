@@ -58,7 +58,9 @@ class ${type.name}(Enum):
 % if isinstance(type, SequenceType):
 class ${type.name}:
 % for member in type.elements:
+% if not member.acn:
     ${member.name} : ${member.type_name}
+% endif
 % endfor
 
 

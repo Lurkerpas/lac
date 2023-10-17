@@ -87,7 +87,9 @@ typedef enum
 typedef struct
 {
 % for member in type.elements:
+% if not member.acn:
     ${member.type_name} ${member.name};
+% endif
 % endfor
 } ${type.name};
 

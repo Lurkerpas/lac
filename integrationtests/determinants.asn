@@ -1,0 +1,15 @@
+Test DEFINITIONS ::= 
+BEGIN
+
+Flag ::= BOOLEAN
+
+LengthType ::= INTEGER(0..15)
+
+ArrayType ::= OCTET STRING(SIZE(0..15))
+
+Container ::= SEQUENCE {
+    flag1 Flag,
+    data ArrayType
+}
+
+END
