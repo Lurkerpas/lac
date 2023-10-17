@@ -12,6 +12,9 @@ from lac.asn1types import \
     EnumerationType, \
     NullType
 
+from lac.acnencoding import \
+    DeterminedSizeEncoding
+
 class TestTypes:
     __code_dir = Path(__file__).resolve().parent
 
@@ -214,4 +217,29 @@ class TestTypes:
         assert "b" == type.elements[2].name
         assert not type.elements[2].acn
         assert "Uint8" == type.elements[2].type_name
+
+    def test_size_determinant(self):
+        modules = lac.load_modules(
+            [self.path("type_size_determinant.asn")],
+            [self.path("type_size_determinant.acn")],
+        )
+        assert 1 == len(modules)
+        module = modules[0]
+        assert "DeterminantModule" == module.name
+        assert 4 == len(module.types.values())
+        assert "Container" in module.types.keys()
+        type = module.types["Container"]
+        assert isinstance(type, SequenceType)
+        assert 3 == len(type.elements)
+        assert "l" == type.elements[0].name
+        assert type.elements[0].acn
+        assert "LengthType" == type.elements[0].type_name
+        assert "flag1" == type.elements[1].name
+        assert not type.elements[1].acn
+        assert "Flag" == type.elements[1].type_name
+        assert "data" == type.elements[2].name
+        assert not type.elements[2].acn
+        assert "ArrayType" == type.elements[2].type_name
+        assert isinstance(type.elements[2].encoding.options.size, DeterminedSizeEncoding)
+        assert "l" == type.elements[2].encoding.options.size.determinant_name
         

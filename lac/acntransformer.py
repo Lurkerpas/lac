@@ -20,10 +20,16 @@ def parse_acn_integer_value(tree: ParseTree) -> int:
 
 
 def parse_acn_size_encoding(tree: ParseTree) -> SizeEncoding:
-    if tree.children[0].data.value == "integer_value":
-        size = FixedSizeEncoding()
-        size.size = parse_acn_integer_value(tree.children[0])
-        return size
+    if isinstance(tree.children[0], Token):
+        if tree.children[0].type == "MEMBER_IDENTIFIER":
+            size = DeterminedSizeEncoding()
+            size.determinant_name = tree.children[0].value
+            return size
+    elif isinstance(tree.children[0], Tree):
+        if tree.children[0].data.value == "integer_value":
+            size = FixedSizeEncoding()
+            size.size = parse_acn_integer_value(tree.children[0])
+            return size
     else:
         pass
 
@@ -45,7 +51,9 @@ def parse_acn_member_encoding_specification(tree: ParseTree) -> MemberEncodingSp
     spec.member_type_name = None
     if tree.children[1] is not None:
         spec.member_type_name = tree.children[1].value
-    spec.specification # TODO
+    if tree.children[2] is not None and tree.children[2].children[0] is not None:
+        spec.specification = EncodingSpecification()
+        spec.specification.options = parse_acn_encoding_options(tree.children[2].children[0] )
     return spec
     
 

@@ -1,0 +1,16 @@
+DeterminantModule DEFINITIONS ::= 
+BEGIN
+
+Flag []
+
+LengthType [size 8]
+
+ArrayType []
+
+Container [] {
+    l LengthType [],
+    flag1 [],
+    data [size l]
+}
+
+END

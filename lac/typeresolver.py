@@ -59,7 +59,10 @@ def resolve_acn_fields(type : SequenceType):
             acn_element.acn = True
             acn_element.name = spec.member_name
             acn_element.type_name = spec.member_type_name
+            acn_element.encoding = spec.specification
             type.elements.insert(i, acn_element)
+        else:
+            element.encoding = spec.specification
 
 def resolve_encodings(asn1_module: Asn1Module, acn_module: AcnModule):
     for type_name, type in asn1_module.types.items():
