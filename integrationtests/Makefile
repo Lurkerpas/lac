@@ -38,7 +38,9 @@ basic_types_py:
 	echo "Basic Types Python"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py basic_types.asn basic_types.acn
-	${PY} ${TEST_DIR}/Test.py
+	cp basic_types.py ${TEST_DIR}
+	echo "" > ${TEST_DIR}/__init__.py
+	${PYTEST} -v ${TEST_DIR}/basic_types.py::TestIntegrationBasicTypes
 
 complex_types_c:
 	echo "Complex Types C"
@@ -50,7 +52,9 @@ complex_types_py:
 	echo "Complex Types Python"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py complex_types.asn complex_types.acn
-	${PY} ${TEST_DIR}/Test.py
+	cp complex_types.py ${TEST_DIR}
+	echo "" > ${TEST_DIR}/__init__.py
+	${PYTEST} -v ${TEST_DIR}/complex_types.py::TestIntegrationComplexTypes
 
 vector_types_c:
 	echo "Vector Types C"

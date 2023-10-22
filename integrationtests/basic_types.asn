@@ -6,6 +6,8 @@ Int16 ::= INTEGER(-32768..32767)
 
 Bool8 ::= BOOLEAN
 
+Float32 ::= REAL(-100.0..100.0)
+
 Values ::= ENUMERATION {
     val1 (1),
     val2 (2),

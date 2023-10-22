@@ -17,7 +17,7 @@ module_name = module.name.upper()
 %>
 ## Standard Python imports
 from typing import List, Union
-from enum import Enum
+from enum import Enum, IntEnum
 from bitstring import BitArray, BitStream
 
 ## Includes for imported types
@@ -44,7 +44,7 @@ ${type.name} = bool
 % endif
 ## EnumerationType
 % if isinstance(type, EnumerationType):
-class ${type.name}(Enum): 
+class ${type.name}(IntEnum): 
 % for value in type.values:
 %   if value.value is not None:
     ${value.name.upper()} = ${value.value},
@@ -68,7 +68,7 @@ class ${type.name}:
 % endif
 ## ChoiceType
 % if isinstance(type, ChoiceType):
-class ${type.name}_selection(Enum):
+class ${type.name}_selection(IntEnum):
 <% count = 0 %>\
 % for member in type.alternatives:
     ${member.name}_PRESENT = ${count}, <% count = count + 1 %>
@@ -125,13 +125,25 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 % endif
 ## BooleanType
 % if isinstance(type, BooleanType):
+def encode_${type.name}(x : ${type.name}) -> BitArray:
+    value = 1 if x else 0
+    return BitArray(uint=value, length=${type.encoding.options.size.size})
 
+def decode_${type.name}(data : BitStream) -> ${type.name}:
+    value = data[data.bitpos:data.bitpos+${type.encoding.options.size.size}].uint
+    data.bitpos += ${type.encoding.options.size.size}
+    return value != 0
 % endif
 ## EnumerationType
 % if isinstance(type, EnumerationType):
-% for value in type.values:
+def encode_${type.name}(x : ${type.name}) -> BitArray:
+    return BitArray(uint=x, length=${type.encoding.options.size.size})
 
-% endfor
+def decode_${type.name}(data : BitStream) -> ${type.name}:
+    x = data[data.bitpos:data.bitpos+${type.encoding.options.size.size}].uint
+    data.bitpos += ${type.encoding.options.size.size}
+    return ${type.name}(x)
+
 % endif
 ## SequenceType
 % if isinstance(type, SequenceType):

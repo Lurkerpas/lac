@@ -6,6 +6,8 @@ Int16 [size 16, encoding twos-complement]
 
 Bool8 [size 8]
 
+Float32 []
+
 Values [size 16, encode-values]
 
 END
