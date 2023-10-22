@@ -51,6 +51,9 @@ class EncodingOptions:
     endianness: Endianness
     scalar_encoding: ScalarEncoding
 
+    def __init__(self) -> None:
+        self.size = SizeEncoding()
+
 
 class EncodingSpecification:
     type_name: str
@@ -60,6 +63,7 @@ class EncodingSpecification:
     def __init__(self) -> None:
         self.member_specifications = []
         self.type_name = ""
+        self.options = EncodingOptions()
 
 
 class AcnModule:

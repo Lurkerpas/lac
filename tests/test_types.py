@@ -235,6 +235,7 @@ class TestTypes:
         assert "l" == type.elements[0].name
         assert type.elements[0].acn
         assert "LengthType" == type.elements[0].type_name
+        assert "data" == type.elements[0].determined_member_name
         assert "flag1" == type.elements[1].name
         assert not type.elements[1].acn
         assert "Flag" == type.elements[1].type_name
@@ -248,4 +249,3 @@ class TestTypes:
         determined_type = module.types["Container_ArrayType"]
         assert isinstance(determined_type, OctetStringType)
         assert "l" == determined_type.size.determinant_name
-        

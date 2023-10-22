@@ -151,7 +151,15 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 def encode_${type.name}(x : ${type.name}) -> BitArray:
     data = BitArray()
 % for member in type.elements:
+%   if member.acn:
+    data = data + encode_${member.type_name}(len(x.${member.determined_member_name}))
+%   else:
+%       if member.determinant_name is not None:
+    data = data + encode_${member.type_name}(len(x.${member.name}), x.${member.name})
+%       else:
     data = data + encode_${member.type_name}(x.${member.name})
+%       endif
+%   endif
 % endfor
     return data
 

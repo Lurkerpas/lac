@@ -82,6 +82,7 @@ def create_determined_sequence_of(
     acn_module.specifications[name] = new_type_spec
     return new_type
 
+
 def create_determined_octet_string(
     asn1_module: Asn1Module,
     acn_module: AcnModule,
@@ -103,6 +104,17 @@ def create_determined_octet_string(
     acn_module.specifications[name] = new_type_spec
     return new_type
 
+
+def find_determined_member(
+    host: SequenceType, determinant: SequenceElement
+) -> SequenceElement:
+    for element in host.elements:
+        if isinstance(element.encoding.options.size, DeterminedSizeEncoding):
+            if element.encoding.options.size.determinant_name == determinant.name:
+                return element
+    return None
+
+
 def resolve_sequence_of_determinants(
     asn1_module: Asn1Module, acn_module: AcnModule, type: SequenceType
 ):
@@ -110,6 +122,10 @@ def resolve_sequence_of_determinants(
     for i in range(0, field_count):
         element = type.elements[i]
         element_type = asn1_module.types[element.type_name]
+        if element.acn:
+            determined_member = find_determined_member(type, element)
+            if determined_member is not None:
+                element.determined_member_name = determined_member.name
         if isinstance(element_type, SequenceOfType):
             if isinstance(element.encoding.options.size, DeterminedSizeEncoding):
                 if element.encoding.options.size.determinant_name is not None:
@@ -121,7 +137,9 @@ def resolve_sequence_of_determinants(
                         element.encoding.options.size.determinant_name,
                     )
                     element.type_name = new_type.name
-                    element.determinant_name = element.encoding.options.size.determinant_name
+                    element.determinant_name = (
+                        element.encoding.options.size.determinant_name
+                    )
         if isinstance(element_type, OctetStringType):
             if isinstance(element.encoding.options.size, DeterminedSizeEncoding):
                 if element.encoding.options.size.determinant_name is not None:
@@ -133,7 +151,9 @@ def resolve_sequence_of_determinants(
                         element.encoding.options.size.determinant_name,
                     )
                     element.type_name = new_type.name
-                    element.determinant_name = element.encoding.options.size.determinant_name
+                    element.determinant_name = (
+                        element.encoding.options.size.determinant_name
+                    )
 
 
 def resolve_acn_fields(type: SequenceType):

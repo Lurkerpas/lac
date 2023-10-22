@@ -100,7 +100,8 @@ class SequenceElement:
     type_name: str
     optional: bool
     acn: bool
-    determinant_name : str
+    determinant_name: str
+    determined_member_name: str
     encoding: EncodingSpecification
 
     def __init__(self) -> None:
@@ -110,6 +111,7 @@ class SequenceElement:
         self.acn = False
         self.encoding = None
         self.determinant_name = None
+        self.determined_member_name = None
 
 
 class SequenceType(Asn1Type):
