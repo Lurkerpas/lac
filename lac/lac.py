@@ -91,10 +91,12 @@ def process_modules(
     return result
 
 
-def save_modules(modules: dict[str, str], directory : str, extension: str):
+def save_modules(modules: dict[str, str], directory: str, extension: str):
     os.makedirs(directory, exist_ok=True)
     for module_name, module in modules.items():
-        file_name = Path.joinpath(Path(directory).resolve(), f"{module_name}.{extension}")
+        file_name = Path.joinpath(
+            Path(directory).resolve(), f"{module_name}.{extension}"
+        )
         with open(file_name, "w") as file:
             file.write(module)
 
@@ -113,9 +115,7 @@ def main():
     parser.add_argument(
         "-e", "--extension", help="Extension to be used for the output files"
     )
-    parser.add_argument(
-        "-o", "--output", help="Output directory"
-    )
+    parser.add_argument("-o", "--output", help="Output directory")
     parser.add_argument("-v", "--verbose", help="Verbose mode")
     arguments = parser.parse_args()
 

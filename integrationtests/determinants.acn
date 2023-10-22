@@ -1,7 +1,7 @@
 Test DEFINITIONS ::= 
 BEGIN
 
-Flag []
+Flag [size 16]
 
 LengthType [size 8]
 

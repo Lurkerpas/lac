@@ -23,7 +23,7 @@ from .asn1types import (
     Size,
     RangedSize,
     FixedSize,
-    NullType
+    NullType,
 )
 
 
@@ -190,9 +190,11 @@ def parse_asn1_alias_definition(tree: ParseTree) -> AliasType:
             result.range.max = parse_asn1_integer_value(tree.children[2])
     return result
 
+
 def parse_asn1_null_definition(tree: ParseTree) -> NullType:
     result = NullType()
     return result
+
 
 def parse_asn1_type_definition(tree: ParseTree) -> Asn1Type:
     name = ""

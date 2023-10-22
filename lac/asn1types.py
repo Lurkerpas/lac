@@ -99,7 +99,8 @@ class SequenceElement:
     name: str
     type_name: str
     optional: bool
-    acn : bool
+    acn: bool
+    determinant_name : str
     encoding: EncodingSpecification
 
     def __init__(self) -> None:
@@ -108,6 +109,7 @@ class SequenceElement:
         self.optional = False
         self.acn = False
         self.encoding = None
+        self.determinant_name = None
 
 
 class SequenceType(Asn1Type):
@@ -176,8 +178,8 @@ class AliasType(Asn1Type):
         super().__init__()
         self.aliased_type_name = ""
 
-class NullType(Asn1Type):
 
+class NullType(Asn1Type):
     def __init__(self) -> None:
         super().__init__()
 
@@ -196,7 +198,7 @@ class Asn1Module:
     imports: List[ModuleImport]
     types: dict[str, Asn1Type]
 
-    def get_importing_module(self, type_name : str) -> ModuleImport:
+    def get_importing_module(self, type_name: str) -> ModuleImport:
         for module_import in self.imports:
             if type_name in module_import.type_names:
                 return module_import

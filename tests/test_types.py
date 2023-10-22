@@ -1,25 +1,26 @@
 from pathlib import Path
 from lac import acnencoding
 from lac import lac
-from lac.asn1types import \
-    IntegerType, \
-    RealType, \
-    SequenceType, \
-    ChoiceType, \
-    OctetStringType, \
-    SequenceOfType, \
-    BooleanType, \
-    EnumerationType, \
-    NullType
+from lac.asn1types import (
+    IntegerType,
+    RealType,
+    SequenceType,
+    ChoiceType,
+    OctetStringType,
+    SequenceOfType,
+    BooleanType,
+    EnumerationType,
+    NullType,
+)
 
-from lac.acnencoding import \
-    DeterminedSizeEncoding
+from lac.acnencoding import DeterminedSizeEncoding
+
 
 class TestTypes:
     __code_dir = Path(__file__).resolve().parent
 
-    def path(self, file_name : str) -> str:
-        return Path.joinpath(self.__code_dir, file_name) 
+    def path(self, file_name: str) -> str:
+        return Path.joinpath(self.__code_dir, file_name)
 
     def test_bool(self):
         modules = lac.load_modules(
@@ -49,7 +50,7 @@ class TestTypes:
         assert 0 == type.range.min
         assert 200 == type.range.max
         assert 8 == type.encoding.options.size.size
-       
+
     def test_real(self):
         modules = lac.load_modules(
             [self.path("type_real.asn")],
@@ -226,7 +227,7 @@ class TestTypes:
         assert 1 == len(modules)
         module = modules[0]
         assert "DeterminantModule" == module.name
-        assert 4 == len(module.types.values())
+        assert 5 == len(module.types.values())
         assert "Container" in module.types.keys()
         type = module.types["Container"]
         assert isinstance(type, SequenceType)
@@ -239,7 +240,12 @@ class TestTypes:
         assert "Flag" == type.elements[1].type_name
         assert "data" == type.elements[2].name
         assert not type.elements[2].acn
-        assert "ArrayType" == type.elements[2].type_name
-        assert isinstance(type.elements[2].encoding.options.size, DeterminedSizeEncoding)
+        assert "Container_ArrayType" == type.elements[2].type_name
+        assert isinstance(
+            type.elements[2].encoding.options.size, DeterminedSizeEncoding
+        )
         assert "l" == type.elements[2].encoding.options.size.determinant_name
+        determined_type = module.types["Container_ArrayType"]
+        assert isinstance(determined_type, OctetStringType)
+        assert "l" == determined_type.size.determinant_name
         
