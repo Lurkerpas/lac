@@ -1,9 +1,10 @@
+TEST_DIR=out
+TMPLT_DIR=../data
+
 LAC = PYTHONPATH=../ python3 -m lac.lac
 CC=gcc
 PY=python3
-
-TEST_DIR=out
-TMPLT_DIR=../data
+PYTEST=python3 -m pytest
 
 CREATE_EMPTY_TEST_DIR=rm -r -f ${TEST_DIR} && mkdir -p ${TEST_DIR}
 CLEAN_TEST_DIR=rm -r -f ${TEST_DIR}
@@ -61,7 +62,9 @@ vector_types_py:
 	echo "Vector Types Python"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py vector_types.asn vector_types.acn
-	${PY} ${TEST_DIR}/Test.py
+	cp vector_types.py ${TEST_DIR}
+	echo "" > ${TEST_DIR}/__init__.py
+	${PYTEST} -v ${TEST_DIR}/vector_types.py::TestIntegrationVectors
 
 determinants_c:
 	echo "Vector Types C"

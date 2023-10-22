@@ -184,21 +184,26 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 % if isinstance(type, OctetStringType):
 def encode_${type.name}(x : ${type.name}) -> BitArray:
 %   if isinstance(type.size, RangedSize):
-    result = BitArray(int=len(x), length=8) 
-    return result + BitArray.frombytes(x)
+    result = BitArray(uint=len(x), length=8)
 %   else:
-    return BitArray.frombytes(x)
+    result = BitArray()
 %   endif
+    for item in x:
+        result = result + BitArray(uint=item, length=8)
+    return result
 
 def decode_${type.name}(data : BitStream) -> ${type.name}:
 %   if isinstance(type.size, RangedSize):
-    size = data[data.bitpos:data.bitpos + 8].int
+    size = data[data.bitpos:data.bitpos + 8].uint
     data.bitpos += 8
 %   else:
     size = ${type.size.size}
 %   endif
-    result = bytearray(data[data.bitpos:data.bitpos + 8 * size].tobytes())
-    data.bitpos += 8 * size
+    result = []
+    for _ in range(0, size):
+        item = data[data.bitpos:data.bitpos + 8].uint
+        data.bitpos += 8
+        result.append(item)
     return result
 
 % endif
