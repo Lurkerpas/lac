@@ -9,7 +9,7 @@ setup(
     version= "0.0.1",
     packages=find_packages(),
     package_data={"lac" : ["acn.lark","asn1.lark"]},
-    data_files=[("lactemplates",["data/cheader.mako"])],
+    data_files=[("lactemplates",["data/cheader.mako", "data/python.mako"])],
     author="Michał Kurowski",
     author_email="lurkerpas@gmail.com",
     url="https://github.com/Lurkerpas/lac",
