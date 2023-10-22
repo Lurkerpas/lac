@@ -8,7 +8,8 @@ from lac.asn1types import \
     SequenceType, \
     SequenceOfType, \
     ChoiceType, \
-    OctetStringType
+    OctetStringType, \
+    RangedSize
 %>
 ## Python definitions
 <%
@@ -83,6 +84,16 @@ class ${type.name}:
     kind : ${type.name}_selection
     u : ${type.name}_union
 
+
+%endif
+## OctetStringType
+% if isinstance(type, OctetStringType):
+${type.name} = bytearray
+
+% endif
+## SequenceOfType
+% if isinstance(type, SequenceOfType):
+${type.name} = list[${type.element_type_name}]
 
 % endif
 % endfor
@@ -165,8 +176,56 @@ def decode_${type.name}(data : BitStream) -> ${type.name}:
 % for member in type.alternatives:
         case ${type.name}_selection.${member.name}_PRESENT:
             x.u = decode_${member.type_name}(data)
-% endfor  
+% endfor
     return x
+
+% endif
+## OctetStringType
+% if isinstance(type, OctetStringType):
+def encode_${type.name}(x : ${type.name}) -> BitArray:
+%   if isinstance(type.size, RangedSize):
+    result = BitArray(int=len(x), length=8) 
+    return result + BitArray.frombytes(x)
+%   else:
+    return BitArray.frombytes(x)
+%   endif
+
+def decode_${type.name}(data : BitStream) -> ${type.name}:
+%   if isinstance(type.size, RangedSize):
+    size = data[data.bitpos:data.bitpos + 8].int
+    data.bitpos += 8
+%   else:
+    size = ${type.size.size}
+%   endif
+    result = bytearray(data[data.bitpos:data.bitpos + 8 * size].tobytes())
+    data.bitpos += 8 * size
+    return result
+
+% endif
+## SequenceOfType
+% if isinstance(type, SequenceOfType):
+def encode_${type.name}(x : ${type.name}) -> BitArray:
+%   if isinstance(type.size, RangedSize):
+    result = BitArray(int=len(x), length=8) 
+%   else:
+    result = BitArray()
+%   endif
+    for item in x:
+        result = result + encode_${type.element_type_name}(item)
+    return result
+
+def decode_${type.name}(data : BitStream) -> ${type.name}:
+%   if isinstance(type.size, RangedSize):
+    size = data[data.bitpos:data.bitpos + 8].int
+    data.bitpos += 8
+%   else:
+    size = ${type.size.size}
+%   endif
+    result = []
+    for _ in range(0, size):
+        item = decode_${type.element_type_name}(data)
+        result.append(item)
+    return result
 
 % endif
 % endfor
