@@ -14,4 +14,6 @@ TestUnion [] {
     alt2 []
 }
 
+NestedStructure []
+
 END

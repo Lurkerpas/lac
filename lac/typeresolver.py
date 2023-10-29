@@ -157,6 +157,8 @@ def resolve_sequence_of_determinants(
 
 
 def resolve_acn_fields(type: SequenceType):
+    if len(type.encoding.member_specifications) == 0:
+        return
     field_count = max(len(type.elements), len(type.encoding.member_specifications))
     for i in range(0, field_count):
         element = type.elements[i]

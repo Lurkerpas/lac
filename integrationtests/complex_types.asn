@@ -14,4 +14,10 @@ TestUnion ::= CHOICE {
     alt2 Float
 }
 
+NestedStructure ::= SEQUENCE {
+    innerStruct TestStructure,
+    innerUnion TestUnion,
+    param1 Int8
+}
+
 END

@@ -52,7 +52,7 @@ complex_types_c:
 complex_types_html:
 	echo "Complex Types HTML"
 	${CREATE_EMPTY_TEST_DIR}
-	${LAC} -t ${TMPLT_DIR}/html.mako -o ${TEST_DIR} -e html complex_types.asn complex_types.acn
+	${LAC} -t ${TMPLT_DIR}/html.mako -fs -o ${TEST_DIR} -e html complex_types.asn complex_types.acn
 
 complex_types_py:
 	echo "Complex Types Python"

@@ -91,6 +91,29 @@ def process_modules(
     return result
 
 
+def add_structure_members(asn1_module : Asn1Module, elements : List[SequenceElement], sequence : SequenceType):
+    for element in sequence.elements:
+        type_name = element.type_name
+        type = asn1_module.types[type_name]
+        if type is not None and isinstance(type, SequenceType):
+            add_structure_members(asn1_module, elements, type)
+        else:
+            elements.append(element)
+
+
+def flatten_structure(asn1_module : Asn1Module, sequence : SequenceType):
+    members = []
+    add_structure_members(asn1_module, members, sequence)
+    sequence.elements = members
+
+
+def flatten_structures(asn1_modules: List[Asn1Module]):
+    for asn1_module in asn1_modules:
+        for _, asn1_type in asn1_module.types.items():
+            if isinstance(asn1_type, SequenceType):
+                flatten_structure(asn1_module, asn1_type)
+
+
 def save_modules(modules: dict[str, str], directory: str, extension: str):
     os.makedirs(directory, exist_ok=True)
     for module_name, module in modules.items():
@@ -116,7 +139,8 @@ def main():
         "-e", "--extension", help="Extension to be used for the output files"
     )
     parser.add_argument("-o", "--output", help="Output directory")
-    parser.add_argument("-v", "--verbose", help="Verbose mode")
+    parser.add_argument("-v", "--verbose", help="Verbose mode", action='store_true')
+    parser.add_argument("-fs", "--flattenstructures", help="Flatten structures", action='store_true')
     arguments = parser.parse_args()
 
     if arguments.verbose:
@@ -132,6 +156,8 @@ def main():
     extension = arguments.extension
     directory = arguments.output
     input_modules = load_modules(asn1_file_names, acn_file_names)
+    if arguments.flattenstructures:
+        flatten_structures(input_modules)
     output_modules = process_modules(input_modules, template_file_name)
     save_modules(output_modules, directory, extension)
 

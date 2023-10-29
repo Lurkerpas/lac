@@ -48,7 +48,19 @@ Module ${module_name}
 </tr>
 <tr>
 % for member in type.elements:
+<%
+member_type = module.types[member.type_name]
+is_choice = member_type is not None and isinstance(member_type, ChoiceType)
+%>
+%   if is_choice:
+<th>one of:<br/>
+%       for alternative in member_type.alternatives:
+${alternative.type_name}<br/>
+%       endfor
+</th>
+%   else:
 <th>${member.type_name}</th>
+%   endif
 % endfor
 </tr>
 </table>
