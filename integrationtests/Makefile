@@ -14,6 +14,7 @@ TESTS = \
 	basic_types_py \
 	complex_types_c \
 	complex_types_py \
+	complex_types_html \
 	vector_types_c \
 	vector_types_py \
 	determinants_c \
@@ -48,6 +49,11 @@ complex_types_c:
 	${LAC} -t ${TMPLT_DIR}/cheader.mako -o ${TEST_DIR} -e c complex_types.asn complex_types.acn
 	${CC} -c ${TEST_DIR}/Test.c -o ${TEST_DIR}/Test.o
 	
+complex_types_html:
+	echo "Complex Types HTML"
+	${CREATE_EMPTY_TEST_DIR}
+	${LAC} -t ${TMPLT_DIR}/html.mako -o ${TEST_DIR} -e html complex_types.asn complex_types.acn
+
 complex_types_py:
 	echo "Complex Types Python"
 	${CREATE_EMPTY_TEST_DIR}
@@ -71,13 +77,13 @@ vector_types_py:
 	${PYTEST} -v ${TEST_DIR}/vector_types.py::TestIntegrationVectors
 
 determinants_c:
-	echo "Vector Types C"
+	echo "Determinants C"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/cheader.mako -o ${TEST_DIR} -e c determinants.asn determinants.acn
 	# TODO, toposort ${CC} -c ${TEST_DIR}/Test.c -o ${TEST_DIR}/Test.o
 	
 determinants_py:
-	echo "Vector Types Python"
+	echo "Determinants Python"
 	${CREATE_EMPTY_TEST_DIR}
 	${LAC} -t ${TMPLT_DIR}/python.mako -o ${TEST_DIR} -e py determinants.asn determinants.acn
 	cp determinants.py ${TEST_DIR}
