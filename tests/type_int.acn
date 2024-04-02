@@ -3,4 +3,6 @@ BEGIN
 
 TestInt [size 8, encoding pos-int, endianness little]
 
+FakeNull [size 0]
+
 END

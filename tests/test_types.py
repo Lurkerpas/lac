@@ -30,10 +30,13 @@ class TestTypes:
         assert 1 == len(modules)
         module = modules[0]
         assert "BooleanModule" == module.name
-        assert 1 == len(module.types.values())
-        type = list(module.types.values())[0]
-        assert isinstance(type, BooleanType)
-        assert "TestBool" == type.name
+        assert 2 == len(module.types.values())
+        type1 = list(module.types.values())[0]
+        assert isinstance(type1, BooleanType)
+        assert "TestBool" == type1.name
+        type2 = list(module.types.values())[1]
+        assert isinstance(type2, BooleanType)
+        assert "TestBool2" == type2.name
 
     def test_int(self):
         modules = lac.load_modules(
@@ -43,13 +46,19 @@ class TestTypes:
         assert 1 == len(modules)
         module = modules[0]
         assert "IntModule" == module.name
-        assert 1 == len(module.types.values())
-        type = list(module.types.values())[0]
-        assert isinstance(type, IntegerType)
-        assert "TestInt" == type.name
-        assert 0 == type.range.min
-        assert 200 == type.range.max
-        assert 8 == type.encoding.options.size.size
+        assert 2 == len(module.types.values())
+        type1 = list(module.types.values())[0]
+        assert isinstance(type1, IntegerType)
+        assert "TestInt" == type1.name
+        assert 0 == type1.range.min
+        assert 200 == type1.range.max
+        assert 8 == type1.encoding.options.size.size
+        type2 = list(module.types.values())[1]
+        assert isinstance(type2, IntegerType)
+        assert "FakeNull" == type2.name
+        assert 0 == type2.range.min
+        assert 0 == type2.range.max
+        assert 0 == type2.encoding.options.size.size
 
     def test_real(self):
         modules = lac.load_modules(

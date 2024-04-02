@@ -65,15 +65,23 @@ def parse_asn1_real_value(tree: ParseTree) -> int:
 
 def parse_asn1_integer_range(tree: ParseTree) -> IntegerRange:
     range = IntegerRange()
-    range.min = parse_asn1_integer_value(tree.children[0])
-    range.max = parse_asn1_integer_value(tree.children[1])
+    if len(tree.children) == 2:
+        range.min = parse_asn1_integer_value(tree.children[0])
+        range.max = parse_asn1_integer_value(tree.children[1])
+    if len(tree.children) == 1:
+        range.min = parse_asn1_integer_value(tree.children[0])
+        range.max = parse_asn1_integer_value(tree.children[0])
     return range
 
 
 def parse_asn1_real_range(tree: ParseTree) -> RealRange:
     range = RealRange()
-    range.min = parse_asn1_real_value(tree.children[0])
-    range.max = parse_asn1_real_value(tree.children[1])
+    if len(tree.children) == 2:
+        range.min = parse_asn1_real_value(tree.children[0])
+        range.max = parse_asn1_real_value(tree.children[1])
+    if len(tree.children) == 1:
+        range.min = parse_asn1_real_value(tree.children[0])
+        range.max = parse_asn1_real_value(tree.children[0])
     return range
 
 

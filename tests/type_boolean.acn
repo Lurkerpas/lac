@@ -3,4 +3,6 @@ BEGIN
 
 TestBool []
 
+TestBool2 [false-value '00000'B]
+
 END

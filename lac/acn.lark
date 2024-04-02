@@ -25,6 +25,7 @@ endianness_specification_big: "big"
 endianness_specification_little: "little"
 endianness_specification: "endianness" (endianness_specification_big | endianness_specification_little)
 size_specification: "size" (integer_value|MEMBER_IDENTIFIER)
+false_value_specification: "false-value" "'" ("0" | "1" )* "'" "B"
 encoding_specification_pos_int: "pos-int"
 encoding_specification_twos_complement: "twos-complement"
 encoding_specification: "encoding" (encoding_specification_pos_int|encoding_specification_twos_complement)
@@ -33,7 +34,8 @@ encoding_option: [size_specification
     | endianness_specification
     | encode_values_specification
     | determinant_specification
-    | present_when_specification]
+    | present_when_specification
+    | false_value_specification]
 encoding_options: encoding_option ("," encoding_option)*
 encoding_parameter: TYPE_IDENTIFIER ":" MEMBER_IDENTIFIER
 encoding_definition: ["<" encoding_parameter ("," encoding_parameter)* ">"] "[" encoding_options "]" ["{" member_encoding_definition ("," member_encoding_definition)* "}"]

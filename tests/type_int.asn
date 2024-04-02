@@ -3,4 +3,6 @@ BEGIN
 
 TestInt ::= INTEGER(0..200)
 
+FakeNull ::= INTEGER(0)
+
 END

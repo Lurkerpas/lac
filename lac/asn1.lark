@@ -26,7 +26,7 @@ size_definition : "(" "SIZE" "(" ((integer_value ".." integer_value)|integer_val
 presence_statement : MEMBER_IDENTIFIER presence_mode
 member_definition : MEMBER_IDENTIFIER TYPE_IDENTIFIER [optionality_statement]
 boolean_definition : "BOOLEAN"
-integer_definition : "INTEGER" "(" integer_value ".." integer_value ")"
+integer_definition : "INTEGER" (( "(" integer_value ".." integer_value ")") |  ("(" integer_value ")"))
 real_definition : "REAL" "(" real_value ".." real_value ")"
 enumeration_value : MEMBER_IDENTIFIER ["(" integer_value ")"]
 enumeration_definition : "ENUMERATED" "{" enumeration_value ("," enumeration_value)* "}"
