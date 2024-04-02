@@ -249,3 +249,31 @@ class TestTypes:
         determined_type = module.types["Container_ArrayType"]
         assert isinstance(determined_type, OctetStringType)
         assert "l" == determined_type.size.determinant_name
+
+    def test_eximport(self):
+        modules = lac.load_modules(
+            [self.path("eximport.asn")],
+            [self.path("eximport.acn")],
+        )
+        assert 1 == len(modules)
+
+    def test_value_basic(self):
+        modules = lac.load_modules(
+            [self.path("value_basic.asn")],
+            [self.path("value_basic.acn")],
+        )
+        assert 1 == len(modules)
+
+    def test_comment(self):
+        modules = lac.load_modules(
+            [self.path("comment.asn")],
+            [self.path("comment.acn")],
+        )
+        assert 1 == len(modules)
+
+    def test_acn_param(self):
+        modules = lac.load_modules(
+            [self.path("type_acn_param.asn")],
+            [self.path("type_acn_param.acn")],
+        )
+        assert 1 == len(modules)

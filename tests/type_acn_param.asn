@@ -1,0 +1,20 @@
+AcnParamModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..255)
+
+TEnum ::= ENUMERATED {
+    a,
+    b
+}
+
+TChoice ::= CHOICE {
+    a TestInt,
+    b TestInt
+}
+
+TSeq ::= SEQUENCE {
+    c TChoice
+}
+
+END

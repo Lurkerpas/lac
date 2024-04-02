@@ -10,7 +10,7 @@
 %import common.NEWLINE -> NEWLINE
 %ignore WS
 
-COMMENT: "--" /[^\n]*/ NEWLINE
+COMMENT: ("--" /[^\n]*/ NEWLINE) | ("--" /[^\n]*/ "--")
 %ignore COMMENT
 FLOAT : SIGNED_FLOAT|BARE_FLOAT
 MODULE_IDENTIFIER : (UCASE_LETTER(LETTER|DIGIT|"-")*)
@@ -29,7 +29,7 @@ boolean_definition : "BOOLEAN"
 integer_definition : "INTEGER" "(" integer_value ".." integer_value ")"
 real_definition : "REAL" "(" real_value ".." real_value ")"
 enumeration_value : MEMBER_IDENTIFIER ["(" integer_value ")"]
-enumeration_definition : "ENUMERATION" "{" enumeration_value ("," enumeration_value)* "}"
+enumeration_definition : "ENUMERATED" "{" enumeration_value ("," enumeration_value)* "}"
 alias_definition : TYPE_IDENTIFIER [ ("(" "WITH" "COMPONENTS" "{"  presence_statement ("," presence_statement)* "}" ")") | ("(" integer_value ".." integer_value ")")]
 sequence_definition : "SEQUENCE" "{" member_definition ("," member_definition)* "}"
 sequence_of_definition : "SEQUENCE" size_definition "OF" TYPE_IDENTIFIER
@@ -38,8 +38,8 @@ octetstring_definition: "OCTET STRING" size_definition
 bitstring_definition: "BITSTRING" size_definition
 ia5string_definition: "Ia5String" size_definition
 null_definition: "NULL"
-
-type_definition: TYPE_IDENTIFIER "::=" [integer_definition 
+value_definition: MEMBER_IDENTIFIER TYPE_IDENTIFIER "::=" (integer_value | real_value)
+anonymous_type_definition: [integer_definition 
     | boolean_definition 
     | enumeration_definition
     | real_definition
@@ -52,7 +52,10 @@ type_definition: TYPE_IDENTIFIER "::=" [integer_definition
     | null_definition
     | alias_definition]
 
-import_statement: "IMPORTS" TYPE_IDENTIFIER ("," TYPE_IDENTIFIER)* "FROM" MODULE_IDENTIFIER ";" 
-module_imports: import_statement*
-module_body: type_definition*
-module:  MODULE_IDENTIFIER "DEFINITIONS" "::=" "BEGIN" module_imports module_body "END"
+type_definition: TYPE_IDENTIFIER "::=" anonymous_type_definition
+
+import_statement: "IMPORTS" (TYPE_IDENTIFIER ("," TYPE_IDENTIFIER)* "FROM" MODULE_IDENTIFIER)* ";" 
+export_statement: "EXPORTS" ["ALL"|(TYPE_IDENTIFIER ("," TYPE_IDENTIFIER)*)] ";"
+module_eximports: (import_statement|export_statement)*
+module_body: (type_definition | value_definition)*
+module: MODULE_IDENTIFIER "DEFINITIONS" ["AUTOMATIC" "TAGS"] "::=" "BEGIN" module_eximports module_body "END"

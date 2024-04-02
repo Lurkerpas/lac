@@ -1,7 +1,7 @@
 EnumModule DEFINITIONS ::=
 BEGIN
 
-TestEnum ::= ENUMERATION {
+TestEnum ::= ENUMERATED {
     val1 (0),
     val2 (5),
     val3

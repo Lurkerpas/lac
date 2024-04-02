@@ -1,0 +1,11 @@
+CommentModule DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+
+-- This is a comment
+TestInt1 ::= INTEGER(0..255) -- Another Comment
+TestInt2 ::= INTEGER -- Comment --  (0..255)
+TestStruct ::= SEQUENCE {
+    field1 TestInt1 -- Comment --,
+    field2 TestInt2 -- Comment
+}
+
+END

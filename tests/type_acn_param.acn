@@ -1,0 +1,13 @@
+AcnParamModule DEFINITIONS ::=
+BEGIN
+
+TEnum []
+
+TChoice <TEnum: e> [determinant e]
+
+TSeq [] {
+    e TEnum [],
+    c <e> []
+}
+
+END

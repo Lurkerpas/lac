@@ -1,0 +1,8 @@
+ValueModule DEFINITIONS ::=
+BEGIN
+
+TestInt ::= INTEGER(0..200)
+test-value-1 TestInt ::= 15
+test-value-2 TestInt ::= 16
+
+END

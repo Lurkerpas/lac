@@ -1,0 +1,8 @@
+EximModule DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+EXPORTS ALL;
+IMPORTS Type1 FROM Module1
+    TypeA, TypeB FROM Module2;
+TestInt ::= INTEGER(0..255)
+TestIntAlias ::= TestInt(17..31)
+
+END

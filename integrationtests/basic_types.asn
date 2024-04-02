@@ -8,7 +8,7 @@ Bool8 ::= BOOLEAN
 
 Float32 ::= REAL(-100.0..100.0)
 
-Values ::= ENUMERATION {
+Values ::= ENUMERATED {
     val1 (1),
     val2 (2),
     val3 (4) 

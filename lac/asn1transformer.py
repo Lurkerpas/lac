@@ -202,32 +202,32 @@ def parse_asn1_type_definition(tree: ParseTree) -> Asn1Type:
     for child in tree.children:
         if isinstance(child, Token):
             name = child.value
-        elif isinstance(child, Tree):
-            match child.data.value:
+        elif isinstance(child.children[0], Tree):
+            match child.children[0].data.value:
                 case "integer_definition":
-                    type = parse_asn1_integer_definition(child)
+                    type = parse_asn1_integer_definition(child.children[0])
                 case "real_definition":
-                    type = parse_asn1_real_definition(child)
+                    type = parse_asn1_real_definition(child.children[0])
                 case "boolean_definition":
-                    type = parse_asn1_bool_definition(child)
+                    type = parse_asn1_bool_definition(child.children[0])
                 case "enumeration_definition":
-                    type = parse_asn1_enum_definition(child)
+                    type = parse_asn1_enum_definition(child.children[0])
                 case "alias_definition":
-                    type = parse_asn1_alias_definition(child)
+                    type = parse_asn1_alias_definition(child.children[0])
                 case "sequence_definition":
-                    type = parse_asn1_sequence_definition(child)
+                    type = parse_asn1_sequence_definition(child.children[0])
                 case "sequence_of_definition":
-                    type = parse_asn1_sequence_of_definition(child)
+                    type = parse_asn1_sequence_of_definition(child.children[0])
                 case "choice_definition":
-                    type = parse_asn1_choice_definition(child)
+                    type = parse_asn1_choice_definition(child.children[0])
                 case "octetstring_definition":
-                    type = parse_asn1_octetstring_definition(child)
+                    type = parse_asn1_octetstring_definition(child.children[0])
                 case "bitstring_definition":
-                    type = parse_asn1_bitstring_definition(child)
+                    type = parse_asn1_bitstring_definition(child.children[0])
                 case "ia5string_definition":
-                    type = parse_asn1_ia5string_definition(child)
+                    type = parse_asn1_ia5string_definition(child.children[0])
                 case "null_definition":
-                    type = parse_asn1_null_definition(child)
+                    type = parse_asn1_null_definition(child.children[0])
                 case _:
                     pass
     type.name = name

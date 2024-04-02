@@ -147,7 +147,7 @@ def main():
         __log.setLevel(level=logging.INFO)
 
     asn1_file_names = [
-        name for name in arguments.filename if name.lower().endswith("asn")
+        name for name in arguments.filename if name.lower().endswith("asn") or name.lower().endswith("asn1") 
     ]
     acn_file_names = [
         name for name in arguments.filename if name.lower().endswith("acn")
