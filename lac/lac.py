@@ -105,7 +105,9 @@ def process_modules(
 def add_structure_members(asn1_module : Asn1Module, elements : List[SequenceElement], sequence : SequenceType):
     for element in sequence.elements:
         type_name = element.type_name
-        type = asn1_module.types[type_name]
+        type = asn1_module.types[type_name] if type_name in asn1_module.types.keys() \
+            else asn1_module.imported_types[type_name] if type_name in asn1_module.imported_types.keys() \
+                else None
         if type is not None and isinstance(type, SequenceType):
             add_structure_members(asn1_module, elements, type)
         else:

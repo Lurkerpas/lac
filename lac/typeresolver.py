@@ -34,9 +34,10 @@ def resolve_int_alias(alias: AliasType, aliased_type: IntegerType) -> IntegerTyp
     result.name = alias.name
     result.module_name = alias.name
     result.range = IntegerRange()
-    result.range.min = aliased_type.range.min
-    result.range.max = aliased_type.range.max
-    if alias.range is not None:
+    if hasattr(aliased_type,"range"):
+        result.range.min = aliased_type.range.min
+        result.range.max = aliased_type.range.max
+    if hasattr(alias,"range"):
         result.range.min = alias.range.min
         result.range.max = alias.range.max
     return result
