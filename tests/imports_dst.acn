@@ -1,0 +1,8 @@
+Dst DEFINITIONS ::= BEGIN
+
+Seq [] {
+    index [],
+    c []
+}
+
+END

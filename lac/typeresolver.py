@@ -121,7 +121,10 @@ def resolve_sequence_of_determinants(
     field_count = len(type.elements)
     for i in range(0, field_count):
         element = type.elements[i]
-        element_type = asn1_module.types[element.type_name]
+        element_type = asn1_module.types[element.type_name] if element.type_name in asn1_module.types.keys() \
+            else  asn1_module.imported_types[element.type_name] if element.type_name in asn1_module.imported_types.keys() \
+                else None
+        
         if element.acn:
             determined_member = find_determined_member(type, element)
             if determined_member is not None:

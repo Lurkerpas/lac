@@ -1,0 +1,13 @@
+Src DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+EXPORTS ALL;
+
+UINT8 ::= INTEGER(0..255)
+
+Colors ::= ENUMERATED 
+{
+    red (1),
+    blue (2),
+    green (3)
+}
+
+END

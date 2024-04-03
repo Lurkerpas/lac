@@ -1,0 +1,7 @@
+Src DEFINITIONS  ::= BEGIN
+
+UINT8 [size 8]
+
+Colors [size 32]
+
+END

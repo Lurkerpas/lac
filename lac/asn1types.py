@@ -198,6 +198,7 @@ class ModuleImport:
 class Asn1Module:
     name: str
     imports: List[ModuleImport]
+    imported_types : dict[str, Asn1Type]
     types: dict[str, Asn1Type]
 
     def get_importing_module(self, type_name: str) -> ModuleImport:
@@ -210,3 +211,4 @@ class Asn1Module:
         self.name = ""
         self.imports = []
         self.types = {}
+        self.imported_types = {}

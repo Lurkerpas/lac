@@ -261,10 +261,10 @@ class TestTypes:
 
     def test_eximport(self):
         modules = lac.load_modules(
-            [self.path("eximport.asn")],
-            [self.path("eximport.acn")],
+            [self.path("eximport.asn"), self.path("eximport1.asn"), self.path("eximport2.asn")],
+            [self.path("eximport.acn"), self.path("eximport1.acn"), self.path("eximport2.acn")],
         )
-        assert 1 == len(modules)
+        assert 3 == len(modules)
 
     def test_value_basic(self):
         modules = lac.load_modules(
@@ -286,3 +286,10 @@ class TestTypes:
             [self.path("type_acn_param.acn")],
         )
         assert 1 == len(modules)
+
+    def test_import(self):
+        modules = lac.load_modules(
+            [self.path("imports_src.asn"), self.path("imports_dst.asn")],
+            [self.path("imports_src.acn"), self.path("imports_dst.acn")],
+        )
+        assert 2 == len(modules)

@@ -66,6 +66,16 @@ def resolve_encodings(
         acn_module = acn_modules[name]
         typeresolver.resolve_encodings(asn1_module, acn_module)
 
+def resolve_imports(
+    asn1_modules: dict[str, Asn1Module]
+) -> None:
+    for asn1_module in asn1_modules.values():
+        for import_declaration in asn1_module.imports:
+            other_module = asn1_modules[import_declaration.module_name]
+            for other_type_name in import_declaration.type_names:
+                other_type = other_module.types[other_type_name]
+                asn1_module.imported_types[other_type_name] = other_type
+
 
 def load_modules(
     asn1_file_names: List[str], acn_file_names: List[str]
@@ -76,6 +86,7 @@ def load_modules(
     asn1_modules = parse_asn1_modules(asn1_parser, asn1_file_names)
     acn_modules = parse_acn_modules(acn_parser, acn_file_names)
 
+    resolve_imports(asn1_modules)
     resolve_encodings(asn1_modules, acn_modules)
     typeresolver.resolve_aliases(asn1_modules)
     return list(asn1_modules.values())

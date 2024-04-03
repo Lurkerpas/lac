@@ -1,0 +1,9 @@
+Dst DEFINITIONS AUTOMATIC TAGS ::= BEGIN
+IMPORTS UINT8, Colors FROM Src;
+
+Seq ::= SEQUENCE{
+    index UINT8,
+    c Colors
+}
+
+END

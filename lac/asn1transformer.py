@@ -27,15 +27,18 @@ from .asn1types import (
 )
 
 
-def parse_asn1_module_import(tree: ParseTree) -> ModuleImport:
-    result = ModuleImport()
+def parse_asn1_module_import(tree: ParseTree) -> List[ModuleImport]:
+    result = []
+    element = ModuleImport()
     for child in tree.children:
         if isinstance(child, Token):
             match child.type:
                 case "TYPE_IDENTIFIER":
-                    result.type_names.add(child.value)
+                    element.type_names.add(child.value)
                 case "MODULE_IDENTIFIER":
-                    result.module_name = child.value
+                    element.module_name = child.value
+                    result.append(element)
+                    element = ModuleImport()
     return result
 
 
@@ -45,7 +48,7 @@ def parse_asn1_module_imports(tree: ParseTree) -> List[ModuleImport]:
         if isinstance(child, Tree):
             match child.data.value:
                 case "import_statement":
-                    result.append(parse_asn1_module_import(child))
+                    result = result + parse_asn1_module_import(child)
                 case _:
                     pass
     return result
@@ -262,7 +265,7 @@ def parse_asn1_module(tree: ParseTree) -> Asn1Module:
             module.name = child.value
         elif isinstance(child, Tree):
             match child.data.value:
-                case "module_imports":
+                case "module_eximports":
                     module.imports = parse_asn1_module_imports(child)
                 case "module_body":
                     module.types = parse_asn1_module_body(child)
